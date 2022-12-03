@@ -1,0 +1,89 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <windows.h>
+ 
+ 
+int letter_count(std::string str, char let)
+{
+    int l = str.size(), c = 0;
+    for (int j = 0; j < l; j++)
+    {
+        if (str[j] == let)
+        {
+            c++;
+        }
+    }
+    if (c == 3)
+    {
+ 
+        return 1;
+    }
+    return 0;
+}
+ 
+ 
+int main()
+{
+SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    std::string inp = " ", answer[100], last_word = "";
+    char letter;
+    int N = -1, count = 0, len;
+    std::string s;
+    std::ifstream file("file.txt", std::ios::in);
+    std::ofstream file2("outfile.txt", std::ios::out);
+    std::cin >> letter;
+    while (inp != last_word)
+    {
+        last_word = inp;
+        file >> inp;
+        if (N == -1)
+        {
+            N = stoi(inp);
+        }
+        else
+        {
+            if (letter_count(inp, letter))
+            {
+                len = inp.size();
+                for (int i = 0; i < 100; i++)
+{
+                    if (answer[i].size() == 0)
+                    {
+                        answer[i] = inp;
+                        break;
+                    }
+                    else
+                    {
+                        if (answer[i].size() > len)
+                        {
+                            s = answer[i];
+                            answer[i] = inp;
+                            for (int k = i + 1; k < 100; k++)
+                            {
+                                inp = answer[k];
+                                answer[k] = s;
+                                s = inp;
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (inp != last_word)
+                {
+count++;
+                }
+ 
+            }
+        }
+    }
+    for (int i = 0; i < count; i++)
+    {
+        std::cout << answer[i] << std::endl;
+    }
+ 
+    file.close();
+    file2.close();
+    return 0;
+}
